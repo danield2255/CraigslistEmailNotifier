@@ -25,15 +25,17 @@ option.add_argument('headless')
 #option.add_argument("--no-startup-window")
 #wd = webdriver.Chrome("dependencies/chromedriver", options = option)
 wd = webdriver.PhantomJS("dependencies/phantomjs")
-#Enter the particular craigslist site desired in quotes
-wd.get("""url""")
+url = #INPUT: Enter the particular craigslist site desired in quotes
+wd.get(url)
+
+#selects the 'gigs' subgroup to search in
 gigsButton = wd.find_element_by_xpath('//*[@id="ggg"]/h4/a')
 gigsButton.click()
 time.sleep(2)
 
 searchBar = wd.find_element_by_xpath('//*[@id="query"]')
-#enter the value of what you would like to search for
-searchBar.send_keys("""search""")
+search_val = #INPUT:enter the value of what you would like to search for
+searchBar.send_keys(search_val)
 searchBar.send_keys(Keys.ENTER)
 time.sleep(2)
 
@@ -44,26 +46,22 @@ for listing in listings:
     #Makes sure only looking at results in desired location
     links.append(listing)
 
-
-
-
-
+#Compose the email message
 msg = EmailMessage()
 msg["Subject"] = "Update of Craigslist Listing"
 msg["From"] = emailAddress
 msg["To"] = emailAddress
 #put in the content of text in the email
-content = #content
+content = #INPUT: content
 total = ""
 for item in links:
-    #cur = item.format(link = item.get("href"), text = item.text)
     total = total + str(item) + "<br><br>"
 
 
 msg.set_content(MIMEText(content + total, "html"))
 
 
-#this will work if the email you are trying to send from is a gmail, will need to change otherwise
+#this will work if the email you are trying to send from is a gmail, will need to change the input parameter otherwise
 with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
     smtp.login(emailAddress, emailPass)
     smtp.send_message(msg)
